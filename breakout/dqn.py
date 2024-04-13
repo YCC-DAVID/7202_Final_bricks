@@ -117,6 +117,9 @@ def train(model, start):
        
         action[action_index] = 1
 
+
+
+
         if epsilon > model.final_epsilon:
             epsilon -= (model.initial_epsilon - model.final_epsilon) / model.explore
 
