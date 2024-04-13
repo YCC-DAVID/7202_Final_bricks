@@ -35,6 +35,7 @@ screen = pygame.display.set_mode(SIZE_OF_THE_SCREEN)
 pygame.display.set_caption(" BREAKOUT")
 clock = pygame.time.Clock()
 
+
 class Breakout:
 
     def __init__(self):
@@ -43,6 +44,7 @@ class Breakout:
         self.ball_vel = [6,-6]
         self.paddle   = pygame.Rect(215, PADDLE_Y,PADDLE_WIDTH, HEIGH_OF_PADDLE)
         self.ball     = pygame.Rect(225,PADDLE_Y - BALL_DIAMETER,BALL_DIAMETER,BALL_DIAMETER)
+        self.Hit_point = 0
         self.create_bricks()
 
     def create_bricks(self):
@@ -120,7 +122,7 @@ class Breakout:
         for brick in self.bricks:
             if self.ball.colliderect(brick):
                 reward += 2
-
+                self.Hit_point += 1
                 ball_center_x = self.ball.centerx
                 ball_center_y = self.ball.centery
 
@@ -145,6 +147,9 @@ class Breakout:
 
         if len(self.bricks) == 0:
             self.terminal = True
+            with open('data.txt', 'a') as file:
+                file.write(str(self.Hit_point) + '\n')  # 将数据转换为字符串（如果需要的话），并添加换行符
+
             self.__init__()  
         if self.ball.colliderect(self.paddle):
             self.ball.top = PADDLE_Y - BALL_DIAMETER
@@ -152,6 +157,9 @@ class Breakout:
             reward += 2 
         elif self.ball.top > self.paddle.top:
             terminal = True
+            with open('data.txt', 'a') as file:
+                file.write(str(self.Hit_point) + '\n')  # 将数据转换为字符串（如果需要的话），并添加换行符
+
             self.__init__()
             reward = -6
 
