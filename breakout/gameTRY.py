@@ -121,7 +121,7 @@ class Breakout:
         # Handle Collisions
         for brick in self.bricks:
             if self.ball.colliderect(brick):
-                reward += 2
+                # reward = 2
                 self.Hit_point += 1
                 ball_center_x = self.ball.centerx
                 ball_center_y = self.ball.centery
@@ -142,26 +142,26 @@ class Breakout:
 
                 self.bricks.remove(brick)
                 break
-        bricks_destroyed = self.initial_bricks_count - len(self.bricks)-1
-        reward += bricks_destroyed * 0.1
+        # bricks_destroyed = self.initial_bricks_count - len(self.bricks)-1
+        # reward += bricks_destroyed * 0.1
 
         if len(self.bricks) == 0:
             self.terminal = True
-            with open('data.txt', 'a') as file:
+            with open('simple_data2.txt', 'a') as file:
                 file.write(str(self.Hit_point) + '\n')  # 将数据转换为字符串（如果需要的话），并添加换行符
 
             self.__init__()  
         if self.ball.colliderect(self.paddle):
             self.ball.top = PADDLE_Y - BALL_DIAMETER
             self.ball_vel[1] = -self.ball_vel[1]
-            reward += 2 
+            reward = 2 
         elif self.ball.top > self.paddle.top:
             terminal = True
-            with open('data.txt', 'a') as file:
+            with open('simple_data2.txt', 'a') as file:
                 file.write(str(self.Hit_point) + '\n')  # 将数据转换为字符串（如果需要的话），并添加换行符
 
             self.__init__()
-            reward = -6
+            reward = -2
 
         self.draw_bricks()
         self.draw_ball()

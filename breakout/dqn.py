@@ -92,6 +92,8 @@ def train(model, start):
     epsilon = model.initial_epsilon
     iteration = 0
 
+    reward_log_file = open("simple_rewards3_log.txt", "a")  # 'a' 表示以追加模式打开文件
+
     #epsilon = 0.0927
     #iteration = 420000
     # main infinite loop
@@ -191,8 +193,10 @@ def train(model, start):
         state = state_1
         iteration += 1
 
+        reward_log_file.write(f"{iteration} {reward.item()}\n")
+
         if iteration % 10000 == 0:
-            torch.save(model, "trained_model/big_bricks_rewards_with_stay" + str(iteration) + ".pth")
+            torch.save(model, "trained_model/simple_reward3_" + str(iteration) + ".pth")
               
         print("total iteration: {} Elapsed time: {:.2f} minutes epsilon: {:.5f}"
       " action: {} Reward: {:.1f}".format(
@@ -202,6 +206,7 @@ def train(model, start):
           action_index if not isinstance(action_index, torch.Tensor) else action_index.cpu().numpy(),
           reward.item()  # 由于reward是一个单元素tensor，可以使用.item()来获取值
       ))
+    reward_log_file.close()
 
 def test(model):
     game_state = Breakout()
@@ -244,7 +249,7 @@ def main(mode):
         start = time.time()
         train(model, start)
     elif mode == 'continue': # You can change trained model id and keep training.
-        model = torch.load('trained_model/current_model_30000.pth', torch.device('cuda')).eval()
+        model = torch.load('trained_model/simple_reward3_510000.pth', torch.device('cuda')).eval()
         start = time.time()
         train(model, start)
 
